@@ -219,31 +219,27 @@ d3.csv("data/topSubscribed.csv").then(function (data) {
                 .enter()
                 .append("circle")
                 .attr("class", "dot")
-                .attr("cx", (d,i) => x(yearArry[i]))
-                .attr("cy", (d,i) => y(sumCats[catNum[k]][i]))
+                .attr("cx", (d, i) => x(yearArry[i]))
+                .attr("cy", (d, i) => y(sumCats[catNum[k]][i]))
                 .attr("r", 2)
-                .attr("fill", (d) => color[catNum[k]])
-                .on("mouseover", function(d) {
-                    d3.select(this).attr("r", 10).style("fill", color[catNum[k]]);
-                    tooltip.transition().duration(200).style("opacity", .9);
-                    tooltip.html(d)
-                    .style("left", (parseInt(d3.select(this).attr("cx"))
-                            + document.getElementById("chart-container").offsetLeft + 300) + "px")
-                    .style("top", (parseInt(d3.select(this).attr("cy"))
-                            + document.getElementById("chart-container").offsetTop + 300) + "px")
-                    .text("Category:" + catArry[k]
-                            + "\n VideoViews:" + sumCats[catNum[k]][getYear(d3.select(this).attr("cx"), width, yearArry.length)]
-                            + "\n Year:" + yearArry[getYear(d3.select(this).attr("cx"), width, yearArry.length)]);
-                    return tooltip.style("visibility", "visible");
+                .attr("fill", color[catNum[k]])
+                .on("mouseover", function (event, d, i) {
+                     d3.select(this).attr("r", 10).style("fill", color[catNum[k]]);
+                     tooltip.transition().duration(200).style("opacity", .9);
+                     tooltip.html("Category: " + catArry[catNum[k]] +
+                     "<br> VideoViews:" + sumCats[catNum[k]][getYear(d3.select(this).attr("cx"), width, yearArry.length)] +
+                     "<br>Year: " + yearArry[getYear(d3.select(this).attr("cx"), width, yearArry.length)])
+                     .style("left", (event.pageX + 10) + "px")
+                     .style("top", (event.pageY - 20) + "px");
                 })
-                .on("mouseout", function(d) {
-                    d3.select(this).attr("r", 2).style("fill", color[catNum[k]]);
-                    return tooltip.transition().duration(500).style("opacity", 0);
+                .on("mouseout", function () {
+                     d3.select(this).attr("r", 2).style("fill", color[catNum[k]]);
+                     tooltip.transition().duration(500).style("opacity", 0);
                 });
-            // create tooltip
-            var tooltip = d3.select("#chart-container").append("div")
-                            .attr("class", "tooltip")
-                            .style("opacity", 0);
+             // create tooltip
+             var tooltip = d3.select("#chart-container").append("div")
+                             .attr("class", "tooltip")
+                             .style("opacity", 0);
 
             // use x position to get x-axis tick value
             function getYear(xPos, top, intervalNum) {
