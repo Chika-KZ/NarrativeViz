@@ -224,22 +224,25 @@ d3.csv("data/topSubscribed.csv").then(function (data) {
                 .attr("r", 2)
                 .attr("fill", color[catNum[k]])
                 .on("mouseover", function (event, d, i) {
-                     d3.select(this).attr("r", 10).style("fill", color[catNum[k]]);
-                     tooltip.transition().duration(200).style("opacity", .9);
-                     tooltip.html("Category: " + catArry[catNum[k]] +
-                     "<br> VideoViews:" + sumCats[catNum[k]][getYear(d3.select(this).attr("cx"), width, yearArry.length)] +
-                     "<br>Year: " + yearArry[getYear(d3.select(this).attr("cx"), width, yearArry.length)])
-                     .style("left", (event.pageX + 10) + "px")
-                     .style("top", (event.pageY - 20) + "px");
-                })
-                .on("mouseout", function () {
-                     d3.select(this).attr("r", 2).style("fill", color[catNum[k]]);
-                     tooltip.transition().duration(500).style("opacity", 0);
-                });
-             // create tooltip
-             var tooltip = d3.select("#chart-container").append("div")
-                             .attr("class", "tooltip")
-                             .style("opacity", 0);
+                    const data = d3.select(this).data()[0];
+                    d3.select(this).attr("r", 10).style("fill", color[catNum[k]]);
+                    tooltip.transition().duration(200).style("opacity", .9);
+                    tooltip.html("Category: " + catArry[catNum[k]] +
+                      "<br>Video Views: " + formatNumberWithCommas(sumCats[catNum[k]][getYear(d3.select(this).attr("cx"), width, yearArry.length)]) +
+                      "<br>Year: " + yearArry[getYear(d3.select(this).attr("cx"), width, yearArry.length)])
+                      .style("left", (event.pageX + 10) + "px")
+                      .style("top", (event.pageY - 20) + "px");
+                  })
+                  .on("mouseout", function () {
+                      d3.select(this).attr("r", 2).style("fill", color[catNum[k]]);
+                      tooltip.transition().duration(500).style("opacity", 0);
+                  });
+  
+              // create tooltip
+              var tooltip = d3.select("#chart-container").append("div")
+                              .attr("class", "tooltip")
+                              .style("opacity", 0);
+  
 
             // use x position to get x-axis tick value
             function getYear(xPos, top, intervalNum) {
