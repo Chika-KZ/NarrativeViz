@@ -1,0 +1,105 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* main container */
+#main-container {
+  flex: 1; 
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: flex-start; 
+}
+
+/* narrative section */
+#narrative {
+  background-color: #fafafa;
+  padding: 20px;
+  margin: 20px;
+}
+
+/* container for chart and checkbox */
+#chart-and-checkbox-container {
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: center; 
+  align-items: flex-start; 
+  margin: 20px;
+}
+
+/* chart container */
+#chart-container {
+  width: 80%;
+  margin: 20px;
+  background-color: #fafafa;
+}
+
+/* checkbox container */
+#checkbox-container {
+  width: 13%; 
+  background-color: #fafafa;
+  border: solid 3px #ff7347;
+  font-size: 14px;
+  text-align: left;
+  margin: 20px;
+  margin-left: 10px; 
+}
+
+/* navigation section */
+.navigation {
+  position: relative; 
+  text-align: center;
+  margin: 20px;
+  bottom: 7.5%;
+  left: -6%;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+/* tooltip container */
+div.tooltip {   
+  padding-left: 10px;
+  border-radius: 10px;
+  position: absolute;
+  user-select: none;
+  font-size: 12px;
+  font-family: sans-serif;
+  width: 250px;
+  color: #EEEEEE;
+  background-color: #FD7013;
+}
+
+/* annotation container */
+#annotation-container {
+  position: relative; 
+  bottom: 82%;
+  left: 10%;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(219, 119, 25, 0.473);
+  font-size: 12px;
+  width: 18%;
+  height: auto; 
+  display: none; 
+}
+
+p {
+  max-width: 1500px; 
+  word-wrap: break-word;
+}

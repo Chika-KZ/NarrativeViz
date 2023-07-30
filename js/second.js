@@ -1,5 +1,5 @@
 // set dimensions and margins for the chart
-const margin = { top: 180, right: 30, bottom: 50, left: 100};
+const margin = { top: 180, right: 30, bottom: 50, left: 110};
 const width = 1000 - margin.left - margin.right;
 const height = 900 - margin.top - margin.bottom;
 
@@ -10,7 +10,7 @@ let i = 0;
 const yearArry = [];
 for (let j = yearBegin; j <= yearEnd; j++) {
     yearArry[i] = j;
-    i++;
+    i++
 }
 
 // set category
@@ -32,24 +32,25 @@ for (let i = 0; i < catArry.length; i++) {
     checkedCategories.push(i);
 }
 
-const chartTitle = "Cumulative Number of Subscribers by Category (2005 - 2021)";
+const chartTitle = "Cumulative Number of Video Views by Category (2005 - 2021)";
 const xLabel = "Year";
-const ylabel = "Running Sum of Subscribers";
+const ylabel = "Running Sum of Video Views";
+
 
 // set up the x and y scales
 const x = d3.scaleTime()
-    .range([0, width]);
+  .range([0, width]);
 
 const y = d3.scaleLinear()
-    .range([height, 0]);
+  .range([height, 0]);
 
 // create the SVG element and append it to the chart container
 const svg = d3.select("#chart-container")
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
 
 // add the chart title to the SVG container
 svg.append("text")
@@ -62,8 +63,8 @@ svg.append("text")
 
 // add the y-axis label to the SVG
 svg.append("text")
-    .attr("x", -200)
-    .attr("y", -100)
+    .attr("x", -280)
+    .attr("y", -110)
     .attr("dy", "1em")
     .style("text-anchor", "middle")
     .attr("transform", "rotate(-90)")
@@ -77,25 +78,28 @@ svg.append("text")
     .style("text-anchor", "middle")
     .style("font-size", "16px")
     .text(xLabel);
-    
+
 // load and process data
 d3.csv("data/topSubscribed.csv").then(function (data) {
 
-    // convert the Started year and Subscribers to numbers
+    // convert the Started year and video views to numbers
     data.forEach(d => {
+        console.log(d["Video Views"]);
         d.Started = +d.Started;
-        d.Subscribers = +d.Subscribers;
+        d["Video Views"] = +d["Video Views"];
     });
-    // get cumulative subscriber numbers by year and category
+
+    // convert the Started year and VideoViews to numbers
     for (let i = 0; i < catArry.length; i++) {
         let sum = 0;
         const sumByYear = [];
         for(let j = 0; j < yearArry.length; j++) {
             data.forEach(d => {
-                d.Subscribers = +d.Subscribers;
+                d["Video Views"] = +d["Video Views"];
                 // cumulate number variables
                 if (d.Category == catArry[i] && d.Started == yearArry[j]) {
-                    sum += d.Subscribers;
+                    sum += d["Video Views"];
+                    //sumSubs.push(sum);
                 }
             })
             sumByYear.push(sum);
@@ -116,7 +120,7 @@ d3.csv("data/topSubscribed.csv").then(function (data) {
 
     // add the y-axis
     svg.append("g")
-       .call(d3.axisLeft(y));
+      .call(d3.axisLeft(y))
 
     // create the line generator
     function drawLine(catNum) {
@@ -132,96 +136,42 @@ d3.csv("data/topSubscribed.csv").then(function (data) {
 
     // add the line path to the SVG element
     function initChart(catNum) {
+
         for (let k = 0; k < catNum.length; k++) {
-            svg.append("path")
-               .datum(catNum)
-               .attr("class", "line")
-               .attr("fill", "none")
-               .attr("stroke", color[catNum[k]])
-               .attr("stroke-width", 2)
-               .attr("d", drawLine(catNum[k]));
+
+           svg.append("path")
+                .datum(catNum)
+                .attr("class", "line")
+                .attr("fill", "none")
+                .attr("stroke", "#85bb65")
+                .attr("stroke-width", 2)
+                .attr("d", drawLine(catNum[k]))
+                .attr("stroke", (d) => color[catNum[k]]);
 
             svg.selectAll("dot")
-               .data(yearArry)
-               .enter()
-               .append("circle")
-               .attr("class", "dot")
-               .attr("cx", (d, i) => x(yearArry[i]))
-               .attr("cy", (d, i) => y(sumCats[catNum[k]][i]))
-               .attr("r", 2)
-               .attr("fill", color[catNum[k]])
-               .on("mouseover", function (event, d, i) {
-                    d3.select(this).attr("r", 10).style("fill", color[catNum[k]]);
-                    tooltip.transition().duration(200).style("opacity", .9);
-                    tooltip.html("Category: " + catArry[catNum[k]] +
-                    "<br>Subscribers: " + formatNumberWithCommas(sumCats[catNum[k]][getYear(d3.select(this).attr("cx"), width, yearArry.length)]) +
-                    "<br>Year: " + yearArry[getYear(d3.select(this).attr("cx"), width, yearArry.length)])
-                    .style("left", (event.pageX + 10) + "px")
-                    .style("top", (event.pageY - 20) + "px");
-               })
-               .on("mouseout", function () {
-                    d3.select(this).attr("r", 2).style("fill", color[catNum[k]]);
-                    tooltip.transition().duration(500).style("opacity", 0);
-               });
-            // create tooltip
-            var tooltip = d3.select("#chart-container").append("div")
-                            .attr("class", "tooltip")
-                            .style("opacity", 0);
-
-            // use x position to get x-axis tick value
-            function getYear(xPos, top, intervalNum) {
-                const interval = Math.ceil(top / intervalNum);
-                let min = 0;
-                let max = 0;
-                for (let i = 0; i < yearArry.length; i++) {
-                    min = max;
-                    max = min + interval;
-                    if (xPos >= min && xPos <= max) {
-                        return i;
-                    }
-                }
-            }
-        }
-    }
-
-    // update the chart with new categories
-    function updateChart(catNum) {
-        // Remove the existing lines and dots
-        svg.selectAll(".line").remove();
-        svg.selectAll(".dot").remove();
-
-        // redraw the lines and dots with the new categories
-        for (let k = 0; k < catNum.length; k++) {
-            svg.append("path")
-               .datum(yearArry)
-               .attr("class", "line")
-               .attr("fill", "none")
-               .attr("stroke", color[catNum[k]])
-               .attr("stroke-width", 2)
-               .attr("d", drawLine(catNum[k]));
-
-            svg.selectAll("dot")
-               .data(yearArry)
-               .enter()
-               .append("circle")
-               .attr("class", "dot")
-               .attr("cx", (d, i) => x(yearArry[i]))
-               .attr("cy", (d, i) => y(sumCats[catNum[k]][i]))
-               .attr("r", 2)
-               .attr("fill", color[catNum[k]])
-               .on("mouseover", function (event, d, i) {
-                    d3.select(this).attr("r", 10).style("fill", color[catNum[k]]);
-                    tooltip.transition().duration(200).style("opacity", .9);
-                    tooltip.html("Category: " + catArry[catNum[k]] +
+                .data(yearArry)
+                .enter()
+                .append("circle")
+                .attr("class", "dot")
+                .attr("cx", (d, i) => x(yearArry[i]))
+                .attr("cy", (d, i) => y(sumCats[catNum[k]][i]))
+                .attr("r", 2)
+                .attr("fill", color[catNum[k]])
+                .on("mouseover", function (event, d, i) {
+                  const data = d3.select(this).data()[0];
+                  d3.select(this).attr("r", 10).style("fill", color[catNum[k]]);
+                  tooltip.transition().duration(200).style("opacity", .9);
+                  tooltip.html("Category: " + catArry[catNum[k]] +
                     "<br>Video Views: " + formatNumberWithCommas(sumCats[catNum[k]][getYear(d3.select(this).attr("cx"), width, yearArry.length)]) +
                     "<br>Year: " + yearArry[getYear(d3.select(this).attr("cx"), width, yearArry.length)])
                     .style("left", (event.pageX + 10) + "px")
                     .style("top", (event.pageY - 20) + "px");
-               })
-               .on("mouseout", function () {
+                })
+                .on("mouseout", function () {
                     d3.select(this).attr("r", 2).style("fill", color[catNum[k]]);
                     tooltip.transition().duration(500).style("opacity", 0);
-               });
+                });
+
             // create tooltip
             var tooltip = d3.select("#chart-container").append("div")
                             .attr("class", "tooltip")
@@ -243,22 +193,93 @@ d3.csv("data/topSubscribed.csv").then(function (data) {
         }
     }
 
+    // Function to update the chart with new categories
+    function updateChart(catNum) {
+        // remove the existing lines and dots
+        svg.selectAll(".line").remove();
+        svg.selectAll(".dot").remove();
+  
+        // redraw the lines and dots with the new categories
+        for (let k = 0; k < yearArry.length; k++) {
+            //console.log(catNum[k]);
+            //console.log(sumCats[catNum[k]][1]);
+            svg.append("path")
+                .datum(yearArry)
+                .attr("class", "line")
+                .attr("fill", "none")
+                .attr("stroke", "#85bb65")
+                .attr("stroke-width", 2)
+                .attr("d", (d3.line()
+                            .x((d,i) => x(yearArry[i]))
+                            .y((d,i) => y(sumCats[catNum[k]][i]))))
+                .attr("stroke", (d) => color[catNum[k]]);
+    
+            svg.selectAll("dot")
+                .data(yearArry)
+                .enter()
+                .append("circle")
+                .attr("class", "dot")
+                .attr("cx", (d,i) => x(yearArry[i]))
+                .attr("cy", (d,i) => y(sumCats[catNum[k]][i]))
+                .attr("r", 2)
+                .attr("fill", (d) => color[catNum[k]])
+                .on("mouseover", function(d) {
+                    d3.select(this).attr("r", 10).style("fill", color[catNum[k]]);
+                    tooltip.transition().duration(200).style("opacity", .9);
+                    tooltip.html(d)
+                    .style("left", (parseInt(d3.select(this).attr("cx"))
+                            + document.getElementById("chart-container").offsetLeft + 300) + "px")
+                    .style("top", (parseInt(d3.select(this).attr("cy"))
+                            + document.getElementById("chart-container").offsetTop + 300) + "px")
+                    .text("Category:" + catArry[k]
+                            + "\n VideoViews:" + sumCats[catNum[k]][getYear(d3.select(this).attr("cx"), width, yearArry.length)]
+                            + "\n Year:" + yearArry[getYear(d3.select(this).attr("cx"), width, yearArry.length)]);
+                    return tooltip.style("visibility", "visible");
+                })
+                .on("mouseout", function(d) {
+                    d3.select(this).attr("r", 2).style("fill", color[catNum[k]]);
+                    return tooltip.transition().duration(500).style("opacity", 0);
+                });
+            // create tooltip
+            var tooltip = d3.select("#chart-container").append("div")
+                            .attr("class", "tooltip")
+                            .style("opacity", 0);
+
+            // use x position to get x-axis tick value
+            function getYear(xPos, top, intervalNum) {
+                const interval = Math.ceil(top / intervalNum);
+                let min = 0;
+                let max = 0;
+                for (let i = 0; i < yearArry.length; i++) {
+                    min = max;
+                    max = min + interval;
+                    if (xPos >= min && xPos <= max) {
+                        return i;
+                    }
+                }
+            }
+        }
+    }
+    
     // create checkbox
     function createCheckboxes() {
-        const checkboxContainer = d3.select("#checkbox-container");
-
+        const checkboxContainer = d3.select(".checkbox-container");
+        
         catArry.forEach((category, index) => {
             const checkboxDiv = checkboxContainer.append("div");
             checkboxDiv.append("input")
-                .attr("type", "checkbox")
-                .attr("name", "categories")
-                .attr("class", "categories")
-                .attr("value", index)
-                .attr("checked", true);
+            .attr("type", "checkbox")
+            .attr("name", "categories")
+            .attr("class", "categories")
+            .attr("value", index)
+            .attr("checked", true);
             checkboxDiv.append("label")
-                .text(category);
+            .text(category);
         });
     }
+
+    // onload
+    initChart(checkedCategories);
     // initiated the checkboxes
     createCheckboxes();
 
@@ -290,7 +311,7 @@ d3.csv("data/topSubscribed.csv").then(function (data) {
         console.log(catArry.length - 1);
         const topCategory = getTopCat(checkedCategories);
         const annotationText = `Current Top Category: ` + topCategory +
-                               `</br> Subscribers: ` + formatNumberWithCommas(sumCats[catArry.indexOf(topCategory[0])][(catArry.length - 1)]);
+                               `</br> Video Views: ` + formatNumberWithCommas(sumCats[catArry.indexOf(topCategory[0])][(catArry.length - 1)]);
 
         const annotationElement = document.getElementById("annotation-text");
         annotationElement.innerHTML = annotationText;

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Narrative Visualization - Most Subscribed 1000 Youtube Channels</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="main-container" class="main-container">
+        
+    <!-- Narrative section -->
+    <div id="narrative" class="container-fluid">
+      <div>
+        <h1>Popular YouTube Channel Analysis</h1>
+        <p>
+          Finally, the provided scatter plot illustrates an interesting trend among the most popular music YouTube channels, revealing that those with under 25,000 video counts tend to boast approximately 50 million subscribers. Though some outliers exist, most music channels are concentrated within this specific range.
+        </p>
+    
+        <p>
+          Moving on to the first two line charts, depicting subscribers vs. years and video counts vs. years, we notice that the music category outshines others with the highest accumulated subscriber numbers and video views. In contrast, the Entertainment Category secures the second-highest spot for accumulated subscribers and video views, but the scatter plot highlights a more dispersed distribution of video counts. Consequently, increasing channel subscribers in the Entertainment category may necessitate a higher frequency of video uploads. Similarly, the People & Blogs category ranks third in terms of accumulated subscriber rate. The scatter plot exhibits a relatively concentrated range for video counts under 12,655, where approximately 40 million subscribers are observed. However, compared to the first two categories, Music and Entertainment, it only manages to garner half the subscriber count.
+        </p>
+    
+        <p>
+          In conclusion, the scatter and line charts clearly indicate that the music category exhibits a lower video upload rate compared to other categories, while simultaneously maintaining the highest subscriber rate. If you aspire to become a YouTuber, this data suggests that focusing on the music genre could be a rewarding path, offering the potential for substantial subscriber growth with fewer video uploads.
+        </p>
+      </div>
+    </div>
+
+    <!-- Container for Chart and Checkbox -->
+    <div id="chart-and-checkbox-container">
+      <!-- Chart container -->
+      <div id="chart-container"></div>
+
+      <!-- Checkbox container -->
+      <div id="checkbox-container" class="checkbox-container"></div>
+      <!-- Annotation container -->
+      <div id="annotation-container" style="display: none;">
+        <div id="annotation-text"></div>
+      </div>
+    </div>
+
+    <!-- Menu section -->
+    <header class="navigation">
+      <nav>
+          <ul>
+          <li><a href="index.html">1. Subscribers vs. Year</a></li>
+          <li><a href="second.html">2.Video Views vs. Year</a></li>
+          <li><a href="third.html">3. Subscribers vs. Video Counts</a></li>
+          </ul>
+      </nav>
+  </header>
+  <!-- Include the D3.js library -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <!-- Include your custom script file -->
+  <script src="js/third.js"></script>
+</body>
+</html>

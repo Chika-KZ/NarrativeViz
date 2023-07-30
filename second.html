@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Narrative Visualization - Most Subscribed 1000 Youtube Channels</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="main-container" class="main-container">
+        
+        <!-- Narrative section -->
+        <div id="narrative" class="container-fluid">
+          <div>
+            <h1>Popular YouTube Channel Analysis</h1>
+            <p>
+              To delve into the inquiry of identifying YouTube categories among the top 1000 popular channels that require fewer video uploads while maintaining high subscription numbers, we turn our attention to the following chart.
+            </p>
+        
+            <p>
+              Upon a comprehensive examination of the provided chart, a noteworthy observation emerges: the Music category reigns supreme with the highest number of video views between 2005 and 2021. Meanwhile, the Entertainment category, closely trailing Music, showcases steady growth rates over the years. Additionally, the People & Blogs category exhibits a remarkable surge in subscriptions, commencing in 2013.
+            </p>
+        
+            <p>
+              Considering this data, it becomes evident that these top three categories hold promising potential for content creators to generate substantial passive income.
+            </p>
+          </div>
+        </div>
+
+        <!-- Container for Chart and Checkbox -->
+        <div id="chart-and-checkbox-container">
+            <!-- Chart container -->
+            <div id="chart-container"></div>
+      
+            <!-- Checkbox container -->
+            <div id="checkbox-container" class="checkbox-container"></div>
+            <!-- Annotation container -->
+            <div id="annotation-container" style="display: none;">
+              <div id="annotation-text"></div>
+            </div>
+          </div>
+  
+
+    <!-- Menu section -->
+    <header class="navigation">
+      <nav>
+          <ul>
+          <li><a href="index.html">1. Subscribers vs. Year</a></li>
+          <li><a href="second.html">2.Video Views vs. Year</a></li>
+          <li><a href="third.html">3. Subscribers vs. Video Counts</a></li>
+          </ul>
+      </nav>
+  </header>
+    <!-- Load d3-annotation -->
+    <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
+    <!-- Include the D3.js library -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- Include your custom script file -->
+    <script src="js/second.js"></script>
+</body>
+</html>
